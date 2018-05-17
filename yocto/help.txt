@@ -1,0 +1,36 @@
+sudo mount -t cifs -o user=cg\srpatcha  //localfodler/rpiShare $HOME/rpishare3
+
+bitbake/conf/bitbake.conf // conf file
+
+connect to network
+vim /etc/environment    # update proxy from .bashrc
+$ifconfig eth0 up
+$ifconfig eth0 up ; systemctl restart  dhclient ; ifconfig
+
+
+#system("/usr/sbin/flashrom -p internal -r /tmp/bios_backup.bin &> /dev/null");
+
+# confs/local.conf.sample
+recipes-core/packagegroups/packagegroup-core-nodeplane-platform.bb
+#adding layers lzo, mono , libunwind , flashrom 
+#   codepage locals :  glibc-locale glibc-gconv-cp932  glibc-utils # in bb files
+
+// DNS  Error fix 
+meta-nodegos-products/recipes-connectivity/bind/bind_9.10.3-P3.bbappend
+meta-nodegos-products/recipes-connectivity/bind/files/0001-Permissions_DNS_rndc.key.patch
+
+
+Build Img file from tmp/work/deploy/IMX_intel*.tar file 
+sudo dd if=buildroot_image.img of=/dev/sdb bs=1M count=32 
+
+
+cd build/
+source environment-setup-x86_64-linuxsdk-linux ; source oe-init-build-env ; MACHINE=ngs-nodegos-intel-x86-32 bitbake -k ngs-rpi-rootfs-image
+SDKMACHINE=x86_64 MACHINE=ngs-nodegos-intel-x86-32 bitbake -k ngs-universal-dev -c populate_sdk 
+./tmp/deploy/images/ngs-nodegos-intel-x86-32/*tar
+
+Update changes to upsteam of your fork
+git remote -v
+git remote add upstream https://github.com/ngs-linux/ngs-linux.git
+git pull/push upstream rpilinux-dev
+#rpilinux-dev branch name
